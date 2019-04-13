@@ -1,5 +1,5 @@
 # springmvcweb
-spriingmvc+mybatis
+springmvc+mybatis
 
 此代码运行环境：jdk1.8 + tomcat8 +  idea
 
