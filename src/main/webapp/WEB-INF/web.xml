@@ -37,14 +37,16 @@
     </servlet-mapping>
     <!-- 连接池 启用 Web 监控统计功能    end-->
 
+    <!--https://blog.csdn.net/nobody_1/article/details/80039227-->
     <!--配置springmvc DispatcherServlet-->
+    <!--dispatcherServlet初始化的上下文加载的bean是只对spring Web MVC有效的bean,如Controller、handlerMapping、HandlerAdapter等等，该初始化上下文应该只加载web相关组件。-->
     <servlet>
         <servlet-name>springMVC</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
             <!--配置dispatcher.xml作为mvc的配置文件-->
             <param-name>contextConfigLocation</param-name>
-            <param-value>/WEB-INF/dispatcher-servlet.xml</param-value>
+            <param-value>/WEB-INF/spring-mvc.xml</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
         <async-supported>true</async-supported>
@@ -54,6 +56,7 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
     <!--把applicationContext.xml加入到配置文件中-->
+    <!--contextLoaderListener初始化的上下文加载的bean是对于整个应用程序共享的，不管是使用什么表现层技术，一般如DAO层，Service层bean;-->
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>/WEB-INF/applicationContext.xml</param-value>
