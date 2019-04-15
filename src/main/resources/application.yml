@@ -1,13 +1,21 @@
 spring:
   datasource:
+    #这一项可配可不配，如果不配置druid会根据url自动识别dbType，然后选择相应的driverClassName
     driver-class-name: com.mysql.cj.jdbc.Driver
+    #连接数据库的url，不同数据库不一样。例如：
+    #mysql: jdbc:mysql://10.20.153.104:3306/druid2
+    #oracle: jdbc:oracle:thin:@10.20.149.85:1521:ocnauto
     url: jdbc:mysql://localhost:3306/hanpeng?serverTimezone=GMT&useUnicode=true&characterEncoding=utf-8&useSSL=true
+    #连接数据库的用户名
     username: root
+    #连接数据库的密码。如果你不希望密码直接写在配置文件中，
+    #可以使用ConfigFilter。详细看这里：
+    #https://github.com/alibaba/druid/wiki/%E4%BD%BF%E7%94%A8ConfigFilter
     password: root
     type: com.alibaba.druid.pool.DruidDataSource
     #最大活跃数
     maxActive: 20
-    #初始化数量
+    #初始化时建立物理连接的个数。初始化发生在显示调用init方法，或者第一次getConnection时
     initialSize: 1
     #最大连接等待超时时间
     maxWait: 60000
@@ -16,13 +24,26 @@ spring:
     maxPoolPreparedStatementPerConnectionSize: 20
     #通过connectionProperties属性来打开mergeSql功能；慢SQL记录
     #connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+    #最小连接池数量
     minIdle: 1
+    #配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
     timeBetweenEvictionRunsMillis: 60000
+    #配置一个连接在池中最小生存的时间，单位是毫秒
     minEvictableIdleTimeMillis: 300000
     #validationQuery: select 1 from dual
     validationQuery: SELECT 'x'
+    #建议配置为true，不影响性能，并且保证安全性。
+    #申请连接的时候检测，如果空闲时间大于
+    #timeBetweenEvictionRunsMillis，
+    #执行validationQuery检测连接是否有效。
     testWhileIdle: true
+    #申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。
     testOnBorrow: false
+    #归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能
     testOnReturn: false
-    #配置监控统计拦截的filters，去掉后监控界面sql将无法统计,'wall'用于防火墙
+    #属性类型是字符串，通过别名的方式配置扩展插件，
+    #常用的插件有：
+    #监控统计用的filter:stat
+    #日志用的filter:log4j
+    #防御sql注入的filter:wall
     filters: stat, wall, log4j
