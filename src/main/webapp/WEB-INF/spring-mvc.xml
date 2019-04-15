@@ -37,6 +37,7 @@
 
     <!-- 自动扫描装配 -->
     <context:component-scan base-package="cn.hp.controller">
+        <!--除去扫描Service-->
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
     </context:component-scan>
 

@@ -27,9 +27,11 @@
     http://www.springframework.org/schema/util
     http://www.springframework.org/schema/util/spring-util.xsd">
     <context:component-scan base-package="cn.hp">
+        <!--Controller已经在spring-mvc中扫描过，此处不进行扫描-->
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
     <context:property-placeholder properties-ref="yamlProperties"/>
+    <!--配置文件yml-->
     <bean id="yamlProperties" class="org.springframework.beans.factory.config.YamlPropertiesFactoryBean">
         <property name="resources" value="classpath:application.yml" />
     </bean>
@@ -38,19 +40,19 @@
         <property name="url" value="${spring.datasource.url}" />
         <property name="username" value="${spring.datasource.username}" />
         <property name="password" value="${spring.datasource.password}" />
-        <property name="filters" value="stat" />
-        <property name="maxActive" value="20" />
-        <property name="initialSize" value="1" />
-        <property name="maxWait" value="60000" />
-        <property name="minIdle" value="1" />
-        <property name="timeBetweenEvictionRunsMillis" value="60000"/>
-        <property name="minEvictableIdleTimeMillis" value="300000"/>
-        <property name="validationQuery" value="SELECT 'x'" />
-        <property name="testWhileIdle" value="true" />
-        <property name="testOnBorrow" value="false" />
-        <property name="testOnReturn" value="false" />
-        <property name="poolPreparedStatements" value="true" />
-        <property name="maxPoolPreparedStatementPerConnectionSize" value="50"/>
+        <property name="filters" value="${spring.datasource.filters}" />
+        <property name="maxActive" value="${spring.datasource.maxActive}" />
+        <property name="initialSize" value="${spring.datasource.initialSize}" />
+        <property name="maxWait" value="${spring.datasource.maxWait}" />
+        <property name="minIdle" value="${spring.datasource.minIdle}" />
+        <property name="timeBetweenEvictionRunsMillis" value="${spring.datasource.timeBetweenEvictionRunsMillis}"/>
+        <property name="minEvictableIdleTimeMillis" value="${spring.datasource.minEvictableIdleTimeMillis}"/>
+        <property name="validationQuery" value="${spring.datasource.validationQuery}" />
+        <property name="testWhileIdle" value="${spring.datasource.testWhileIdle}" />
+        <property name="testOnBorrow" value="${spring.datasource.testOnBorrow}" />
+        <property name="testOnReturn" value="${spring.datasource.testOnReturn}" />
+        <property name="poolPreparedStatements" value="${spring.datasource.poolPreparedStatements}" />
+        <property name="maxPoolPreparedStatementPerConnectionSize" value="${spring.datasource.maxPoolPreparedStatementPerConnectionSize}"/>
     </bean>
 
     <bean id="transactionManager"
