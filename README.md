@@ -32,4 +32,8 @@ springmvc +mybatis的纯净示例框架
     <li>修改了IndexController，增加了websocket的页面跳转</li>
     <li>修改了pom.xml，增加了websocket的相关jar包</li>
   </ul>
-<p>增加了同一个账号只能同时在线一个，既，同一个账账户登录，后面登录的人会把前者顶掉</p>
+<p>增加了同一个账号只能同时在线一个，既，同一个账账户登录，后面登录的人会把前者顶掉，修改的内容有：</p>
+<ul>
+  <li>修改了spring-shiro.xml，增加安全管理器交给shiro来管理，org.apache.shiro.web.mgt.DefaultWebSecurityManager</li>
+  <li>修改了CustomRealm，增加clearOtherLoginInfo方法，清楚当前用户之前登录的</li>
+</ul>
