@@ -120,4 +120,13 @@ public class IndexController {
         Integer result=testService.delete(id);
         return "redirect:/list";
     }
+
+    /**
+     * websocket页面
+     * @return
+     */
+    @RequestMapping("/websocketpage")
+    public String websocketpage() {
+        return "websocket";
+    }
 }
