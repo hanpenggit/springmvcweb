@@ -25,3 +25,11 @@ springmvc +mybatis的纯净示例框架
   </ul>
 
 <p>后续继续添加，会陆续加入一些功能 例如：webservice、利用模板自动生成</p>
+<p>-------------------------2019年4月16日----------------------------------</p>
+<p>增加了websocket的相关内容，修改的内容有：</p>
+<ul>
+    <li>修改了applicationContext.xml，添加了websocket的spring配置</li>
+    <li>websocket的握手和信息类，在cn.hp.websocket包下 </li>
+    <li>修改了IndexController，增加了websocket的页面跳转</li>
+    <li>修改了pom.xml，增加了websocket的相关jar包</li>
+  </ul>
