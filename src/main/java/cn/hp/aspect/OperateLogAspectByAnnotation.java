@@ -16,9 +16,9 @@ import java.util.List;
 
 /**
  * 根据注解进行切面
+ * @Component
+ * @Aspect
  */
-@Component
-@Aspect
 public class OperateLogAspectByAnnotation extends HandlerInterceptorAdapter {
     private static Logger logger = LoggerFactory.getLogger(OperateLogAspectByAnnotation.class);
     @Pointcut("@annotation(cn.hp.annotations.OperateLog)")

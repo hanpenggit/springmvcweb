@@ -13,9 +13,9 @@ import java.util.List;
 
 /**
  * 根据包路径进行切面
+ * @Component
+ * @Aspect
  */
-@Component
-@Aspect
 public class OperateLogAspectByPackage extends HandlerInterceptorAdapter {
     private static Logger logger = LoggerFactory.getLogger(OperateLogAspectByPackage.class);
     @Pointcut("execution(* cn.hp..*.*(..))")

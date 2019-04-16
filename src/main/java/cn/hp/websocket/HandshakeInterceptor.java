@@ -1,5 +1,6 @@
 package cn.hp.websocket;
 
+import org.apache.shiro.SecurityUtils;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.socket.WebSocketHandler;
@@ -14,6 +15,8 @@ public class HandshakeInterceptor extends HttpSessionHandshakeInterceptor {
                                    ServerHttpResponse response, WebSocketHandler wsHandler,
                                    Map<String, Object> attributes) throws Exception {
         System.out.println("Before Handshake");
+        String principal=SecurityUtils.getSubject().getPrincipal().toString();
+        attributes.put("websocketname",principal);
         return super.beforeHandshake(request, response, wsHandler, attributes);
     }
 

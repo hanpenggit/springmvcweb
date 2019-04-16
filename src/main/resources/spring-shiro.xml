@@ -11,9 +11,21 @@
     <context:component-scan base-package="cn.hp.service"/>
     <!-- 自定义域realm -->
     <bean id="customRealm" class="cn.hp.realm.CustomRealm"></bean>
+
+    <!-- 定义缓存管理器 -->
+    <bean id="cacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager" />
+
+    <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+        <!-- session的失效时长，单位毫秒 -->
+        <property name="globalSessionTimeout" value="600000"/>
+        <!-- 删除失效的session -->
+        <property name="deleteInvalidSessions" value="true"/>
+    </bean>
     <!-- 安全管理器  ref对象-->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="realm" ref="customRealm"/>
+        <!--默认采用的是Servlet容器的session管理，再次启用shiro的sessionManager，否则无法通过sessionDao来管理-->
+        <property name="sessionManager" ref="sessionManager" />
     </bean>
     <!-- shiro filter -->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
