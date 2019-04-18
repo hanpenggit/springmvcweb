@@ -180,6 +180,11 @@
       <artifactId>shiro-spring</artifactId>
       <version>${shiro.version}</version>
     </dependency>
+    <dependency>
+      <groupId>com.oracle</groupId>
+      <artifactId>ojdbc7</artifactId>
+      <version>12</version>
+    </dependency>
   </dependencies>
 
   <build>
