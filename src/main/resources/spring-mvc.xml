@@ -20,11 +20,6 @@
     <!-- 配置注解驱动 可以将request参数与绑定到controller参数上 -->
     <mvc:annotation-driven/>
 
-<!--    &lt;!&ndash;静态资源映射&ndash;&gt;
-    &lt;!&ndash;本项目把静态资源放在了webapp的statics目录下，资源映射如下&ndash;&gt;
-    <mvc:resources mapping="/css/**" location="/WEB-INF/static/css/"/>
-    <mvc:resources mapping="/js/**" location="/WEB-INF/static/js/"/>
-    <mvc:resources mapping="/image/**" location="/WEB-INF/static/image/"/>-->
 
     <!-- 对模型视图名称的解析，即在模型视图名称添加前后缀(如果最后一个还是表示文件夹,则最后的斜杠不要漏了) 使用JSP-->
     <!-- 默认的视图解析器 在上边的解析错误时使用 (默认使用html)- -->
@@ -48,4 +43,26 @@
             <bean  class="cn.hp.inteceptor.OperateLogInteceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
+
+    <!-- 国际化资源文件 -->
+    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basename" value="classpath:language.message" />
+        <!-- 如果在国际化资源文件中找不到对应代码的信息，就用这个代码作为名称  -->
+        <property name="useCodeAsDefaultMessage" value="true" />
+    </bean>
+
+    <!-- 存储区域设置信息
+         SessionLocaleResolver类通过一个预定义会话名将区域化信息存储在会话中。
+     -->
+    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" />
+
+    <mvc:interceptors>
+        <!-- 该拦截器通过名为”lang”的参数来拦截HTTP请求，使其重新设置页面的区域化信息 -->
+        <!-- <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" />  -->
+        <bean class="cn.hp.inteceptor.LanguageInterceptor">
+            <property name="paramName" value="lang" />
+        </bean>
+    </mvc:interceptors>
+    <!--加载静态文件-->
+    <mvc:resources mapping="/static/**" location="/WEB-INF/static/"/>
 </beans>

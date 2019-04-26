@@ -14,12 +14,13 @@
 
     <!-- 定义缓存管理器 -->
     <bean id="cacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager" />
-
+    <bean id="mySessionDao" class="cn.hp.shiro.MemoryDBSessionDao"/>
     <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
         <!-- session的失效时长，单位毫秒 -->
         <property name="globalSessionTimeout" value="600000"/>
         <!-- 删除失效的session -->
         <property name="deleteInvalidSessions" value="true"/>
+        <property name="sessionDAO" ref="mySessionDao"/>
     </bean>
     <!-- 安全管理器  ref对象-->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
@@ -40,6 +41,7 @@
             <value>
                 <!-- 对静态资源设置匿名访问 -->
                 /login = anon
+                /static = anon
                 /** = authc <!--所有url都必须认证通过才可以访问-->
                 <!--/admin* = authc-->
             </value>

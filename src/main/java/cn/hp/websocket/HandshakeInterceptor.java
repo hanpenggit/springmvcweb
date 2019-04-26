@@ -16,7 +16,7 @@ public class HandshakeInterceptor extends HttpSessionHandshakeInterceptor {
                                    Map<String, Object> attributes) throws Exception {
         System.out.println("Before Handshake");
         String principal=SecurityUtils.getSubject().getPrincipal().toString();
-        attributes.put("websocketname",principal);
+        attributes.put("currentUser",principal);
         return super.beforeHandshake(request, response, wsHandler, attributes);
     }
 

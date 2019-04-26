@@ -17,10 +17,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 @Controller
 @RequestMapping("/")
@@ -34,7 +37,9 @@ public class IndexController {
      * @return
      */
     @RequestMapping("/index")
-    public String index() {
+    public String index(HttpServletRequest request) {
+        //String name = getMessage(request, "name");
+        //request.setAttribute("name",name);
         return "index";
     }
 
@@ -78,7 +83,7 @@ public class IndexController {
             request.setAttribute("msg","账号或者密码输入错误");
             return "login";
         }
-        return "index";
+        return "redirect:/index";
     }
 
     /**
@@ -120,6 +125,25 @@ public class IndexController {
         params.put("id",id);
         Integer result=testService.delete(id);
         return "redirect:/list";
+    }
+
+
+    /**
+     * 从国际化资源配置文件中根据key获取value  方法一
+     * @param request
+     * @param key
+     * @return
+     */
+    public static String getMessage(HttpServletRequest request,String key){
+        String lang=request.getParameter("language");
+        if(lang==null){
+            lang="zh_CN";
+        }else if(!lang.equals("zh_CN")||!lang.equals("en_US")){
+            lang="zh_CN";
+        }
+        ResourceBundle bundle = ResourceBundle.getBundle("message_"+lang);
+
+        return bundle.getString(key);
     }
 
     /**

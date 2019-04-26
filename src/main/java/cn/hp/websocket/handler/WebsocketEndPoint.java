@@ -17,7 +17,6 @@ import java.util.*;
 
 public class WebsocketEndPoint extends TextWebSocketHandler {
 
-
     /**
      * 将WebSocketSession存入此处，如果申请了多个WebSocketSession，则全部都发送信息
      */
@@ -25,9 +24,14 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
     @Override
     protected void handleTextMessage(WebSocketSession session,
                                      TextMessage message) throws Exception {
-        String msg=new String(message.asBytes())+"   |"+socketList.size();
-
-        sendMessageToAll(new TextMessage(msg));
+        String currentUser=session.getAttributes().get("currentUser").toString();
+        String msg=new String(message.asBytes());
+        if(msg.equals("login")){
+            //如果当前用户登录，则该用户如果在其他地方已登录，则自动踢出
+            sendMessageToSomeone(currentUser,new TextMessage("logout"));
+        }else{
+            sendMessageToAll(new TextMessage(msg));
+        }
     }
 
     /**
@@ -38,6 +42,19 @@ public class WebsocketEndPoint extends TextWebSocketHandler {
      */
     public void sendMessageToSomeone(WebSocketSession session, TextMessage message) throws IOException {
         session.sendMessage(message);
+    }
+
+    /**
+     * 单独发给某一个人(username)
+     * @param message
+     * @throws IOException
+     */
+    public void sendMessageToSomeone(String username, TextMessage message) throws IOException {
+        for(WebSocketSession session:socketList){
+            if(session.getAttributes().get("currentUser").toString().equals(username)){
+                session.sendMessage(message);
+            }
+        }
     }
 
     /**
