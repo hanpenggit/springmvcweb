@@ -37,3 +37,5 @@ springmvc +mybatis的纯净示例框架
   <li>修改了spring-shiro.xml，增加安全管理器交给shiro来管理，org.apache.shiro.web.mgt.DefaultWebSecurityManager</li>
   <li>修改了CustomRealm，增加clearOtherLoginInfo方法，清楚当前用户之前登录的</li>
 </ul>
+<p>-------------------------2019年4月26日----------------------------------</p>
+<p>自定义SessionDao，将Session的存储交给数据库(本示例为mysql)</p>
