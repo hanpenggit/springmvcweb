@@ -11,14 +11,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
 import cn.hp.service.SessionDBService;
 import com.sun.xml.internal.messaging.saaj.util.ByteInputStream;
 import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.UnknownSessionException;
 import org.apache.shiro.session.mgt.eis.MemorySessionDAO;
@@ -50,23 +47,13 @@ public class MemoryDBSessionDao extends MemorySessionDAO {
         } else {
             Object usernameObj=session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
             String username=null;
-            byte[] bytes=null;
-            try {
-                ByteOutputStream byteOS=new ByteOutputStream();
-                ObjectOutputStream oos=new ObjectOutputStream(byteOS);
-                oos.writeObject(session);
-                oos.close();
-                bytes=byteOS.getBytes();
-                byteOS.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
             if(usernameObj!=null){
                 username=usernameObj.toString();
             }
             Map<String,Object> params=new HashMap<String,Object>();
             params.put("sessionid",id.toString());
             params.put("username",username);
+            byte[] bytes=convertToBinary(session);
             params.put("sessionobj",bytes);
             Map<String,Object> sessionInfo=sessionService.get(params);
             if(sessionInfo==null){
@@ -86,7 +73,7 @@ public class MemoryDBSessionDao extends MemorySessionDAO {
             Object sessionobj=result.get("sessionobj");
             if(sessionobj!=null){
                 byte[] bytes= (byte[])sessionobj;
-                return convert(bytes);
+                return convertToObject(bytes);
             }
         }
         return null;
@@ -110,15 +97,11 @@ public class MemoryDBSessionDao extends MemorySessionDAO {
     @Override
     public Collection<Session> getActiveSessions() {
         List<Map<String,Object>> sessions = sessionService.list();
-        List<byte[]> byte_list = sessions.stream().map(i -> (byte[])i.get("sessionobj")).collect(Collectors.toList());
-        Collection<Session> values=new ArrayList<>();
-        for(byte[] i:byte_list){
-            values.add(convert(i));
-        }
+        Collection<Session> values=sessions.stream().map(i -> (byte[])i.get("sessionobj")).map(i -> convertToObject(i)).collect(Collectors.toList());
         return (Collection)(CollectionUtils.isEmpty(values) ? Collections.emptySet() : Collections.unmodifiableCollection(values));
     }
 
-    public Session convert(byte[]bytes){
+    public Session convertToObject(byte[]bytes){
         try {
             ByteInputStream bis=new ByteInputStream();
             bis.setBuf(bytes);
@@ -131,6 +114,21 @@ public class MemoryDBSessionDao extends MemorySessionDAO {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public byte[] convertToBinary(Object obj){
+        byte[]bytes=null;
+        try {
+            ByteOutputStream byteOS=new ByteOutputStream();
+            ObjectOutputStream oos=new ObjectOutputStream(byteOS);
+            oos.writeObject(obj);
+            oos.close();
+            bytes=byteOS.getBytes();
+            byteOS.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bytes;
     }
 }
 

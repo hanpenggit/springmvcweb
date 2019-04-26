@@ -7,8 +7,12 @@ import com.alibaba.fastjson.JSON;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.session.mgt.DefaultSessionManager;
 import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.apache.shiro.subject.Subject;
+import org.apache.shiro.subject.support.DefaultSubjectContext;
+import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
 @Controller
 @RequestMapping("/")
@@ -153,5 +154,26 @@ public class IndexController {
     @RequestMapping("/websocketpage")
     public String websocketpage() {
         return "websocket";
+    }
+
+    /**
+     * 删除Session 示例，测试是否会跳转登录
+     * @param sessionid
+     * @param request
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/deleteSession",method = RequestMethod.GET)
+    public String deleteSession(String sessionid,HttpServletRequest request) {
+        DefaultWebSecurityManager securityManager = (DefaultWebSecurityManager) SecurityUtils.getSecurityManager();
+        DefaultSessionManager sessionManager = (DefaultSessionManager)securityManager.getSessionManager();
+        Collection<Session> sessions = sessionManager.getSessionDAO().getActiveSessions();//获取当前已登录的用户session列表
+        for(Session session:sessions){
+            //清除该用户以前登录时保存的session
+            if(session.getId().equals(sessionid)) {
+                sessionManager.getSessionDAO().delete(session);
+            }
+        }
+        return "1";
     }
 }
