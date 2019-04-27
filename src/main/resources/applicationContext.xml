@@ -92,4 +92,5 @@
         </websocket:handshake-interceptors>
     </websocket:handlers>
 
+    <import resource="spring-redis.xml"/>
 </beans>

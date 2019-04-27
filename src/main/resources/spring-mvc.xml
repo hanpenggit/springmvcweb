@@ -65,4 +65,5 @@
     </mvc:interceptors>
     <!--加载静态文件-->
     <mvc:resources mapping="/static/**" location="/WEB-INF/static/"/>
+
 </beans>

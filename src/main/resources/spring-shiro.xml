@@ -14,7 +14,8 @@
 
     <!-- 定义缓存管理器 -->
     <bean id="cacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager" />
-    <bean id="mySessionDao" class="cn.hp.shiro.MemoryDBSessionDao"/>
+    <!--<bean id="mySessionDao" class="cn.hp.shiro.MemoryDBSessionDao"/>-->
+    <bean id="mySessionDao" class="cn.hp.shiro.RedisSessionDao"/>
     <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
         <!-- session的失效时长，单位毫秒 -->
         <property name="globalSessionTimeout" value="600000"/>

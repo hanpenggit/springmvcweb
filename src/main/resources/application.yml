@@ -48,3 +48,6 @@ spring:
     #日志用的filter:log4j
     #防御sql注入的filter:wall
     filters: stat, wall, log4j
+redis:
+  hostName: 192.168.239.128
+  port: 6379
