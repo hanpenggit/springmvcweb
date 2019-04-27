@@ -39,3 +39,11 @@ springmvc +mybatis的纯净示例框架
 </ul>
 <p>-------------------------2019年4月26日----------------------------------</p>
 <p>自定义SessionDao，将Session的存储交给数据库(本示例为mysql)</p>
+<p>-------------------------2019年4月27日----------------------------------</p>
+<p>自定义SessionDao，将Session的存储交给 redis，修改的内容有： </p>
+<ul>
+    <li>增加 spring-redis.xml ,并在applicationContext.xml中引入</li>
+    <li>增加 RedisManager，操作redis数据的工具类 </li>
+    <li>修改了 application.yml ，增加 redis的配置信息 </li>
+    <li>修改了spring-shiro.xml</li>
+  </ul>
